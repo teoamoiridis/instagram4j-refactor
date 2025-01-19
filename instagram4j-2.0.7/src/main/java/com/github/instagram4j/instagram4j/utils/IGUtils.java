@@ -259,4 +259,17 @@ public class IGUtils {
             e.printStackTrace();
         }
     }
+    
+    public static byte[][] toSegments(byte[] data, int segmentSize) {
+        int remainder = data.length % segmentSize;
+        int segments = data.length / segmentSize + (remainder == 0 ? 0 : 1);
+        byte[][] ans = new byte[segments][];
+        for (int i = 0; i < (remainder == 0 ? segments : segments - 1); i++)
+            ans[i] = Arrays.copyOfRange(data, i * segmentSize, i * segmentSize + segmentSize);
+        if (remainder != 0)
+            ans[ans.length - 1] = Arrays.copyOfRange(data, (ans.length - 1) * segmentSize,
+                    (ans.length - 1) * segmentSize + remainder);
+
+        return ans;
+    }
 }

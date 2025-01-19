@@ -26,7 +26,7 @@ public class UploadToIgtvTest {
                 cover = new File("src/examples/resources/igtvcover.jpg");
         String upload_id = String.valueOf(System.currentTimeMillis());
         byte[] data = Files.readAllBytes(videoFile.toPath());
-        uploadSegments(client, upload_id, segments(data, 10_000_000), data.length);
+        uploadSegments(client, upload_id, IGUtils.toSegments(data, 10_000_000), data.length);
         new RuploadPhotoRequest(Files.readAllBytes(cover.toPath()), "2", upload_id, false)
                 .execute(client).join();
         int i = 0;
@@ -80,16 +80,4 @@ public class UploadToIgtvTest {
         end.execute(client).join();
     }
 
-    public static byte[][] segments(byte[] data, int segmentSize) {
-        int remainder = data.length % segmentSize;
-        int segments = data.length / segmentSize + (remainder == 0 ? 0 : 1);
-        byte[][] ans = new byte[segments][];
-        for (int i = 0; i < (remainder == 0 ? segments : segments - 1); i++)
-            ans[i] = Arrays.copyOfRange(data, i * segmentSize, i * segmentSize + segmentSize);
-        if (remainder != 0)
-            ans[ans.length - 1] = Arrays.copyOfRange(data, (ans.length - 1) * segmentSize,
-                    (ans.length - 1) * segmentSize + remainder);
-
-        return ans;
-    }
 }

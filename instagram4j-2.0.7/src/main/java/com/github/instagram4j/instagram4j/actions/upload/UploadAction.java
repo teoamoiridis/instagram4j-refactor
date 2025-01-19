@@ -47,7 +47,7 @@ public class UploadAction {
 
     public CompletableFuture<? extends IGResponse> chunkedVideoWithCover(byte[] data, byte[] cover,
             int chunk_size, String upload_id) {
-        return segments(upload_id, toSegments(data, chunk_size), data.length)
+        return segments(upload_id, IGUtils.toSegments(data, chunk_size), data.length)
                 .thenCompose(response -> {
                     return photo(cover, upload_id);
                 });
@@ -95,16 +95,5 @@ public class UploadAction {
                 });
     }
 
-    public static byte[][] toSegments(byte[] data, int segmentSize) {
-        int remainder = data.length % segmentSize;
-        int segments = data.length / segmentSize + (remainder == 0 ? 0 : 1);
-        byte[][] ans = new byte[segments][];
-        for (int i = 0; i < (remainder == 0 ? segments : segments - 1); i++)
-            ans[i] = Arrays.copyOfRange(data, i * segmentSize, i * segmentSize + segmentSize);
-        if (remainder != 0)
-            ans[ans.length - 1] = Arrays.copyOfRange(data, (ans.length - 1) * segmentSize,
-                    (ans.length - 1) * segmentSize + remainder);
 
-        return ans;
-    }
 }
