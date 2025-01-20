@@ -35,18 +35,8 @@ public class LiveTest {
             throws IGLoginException, IGResponseException, ClassNotFoundException,
             FileNotFoundException, IOException {
         IGClient client = SerializeTestUtil.getClientFromSerialize("igclient.ser", "cookie.ser");
-        LiveCreateRequest liveCreate = new LiveCreateRequest();
-        LiveStartRequest liveStart;
-        LiveCreateResponse createResponse = client.sendRequest(liveCreate).join();
-        System.out.printf("Url:\n%s\nKey:\n%s\nBroadcast Id:\n%s\n",
-                createResponse.getBroadcastUrl(), createResponse.getBroadcastKey(),
-                createResponse.getBroadcast_id());
         Scanner in = new Scanner(System.in);
-        System.out.println("Type 's' to start");
-        in.nextLine();
-        String id = createResponse.getBroadcast_id();
-        liveStart = new LiveStartRequest(id, true);
-        client.sendRequest(liveStart);
+        String id = startLive(client, in);
 
         System.out.println("Currently streaming. Type 'end' to end.");
         String input;
@@ -104,6 +94,20 @@ public class LiveTest {
 
         client.sendRequest(new LiveEndBroadcastRequest(id)).join();
         in.close();
+    }
+    
+    public String startLive(IGClient client, Scanner in) {
+        LiveCreateRequest liveCreate = new LiveCreateRequest();
+        LiveCreateResponse createResponse = client.sendRequest(liveCreate).join();
+        System.out.printf("Url:\n%s\nKey:\n%s\nBroadcast Id:\n%s\n",
+                createResponse.getBroadcastUrl(), createResponse.getBroadcastKey(),
+                createResponse.getBroadcast_id());
+        System.out.println("Type 's' to start");
+        in.nextLine();
+        String id = createResponse.getBroadcast_id();
+        LiveStartRequest liveStart = new LiveStartRequest(id, true);
+        client.sendRequest(liveStart);
+        return id;
     }
 
 }
