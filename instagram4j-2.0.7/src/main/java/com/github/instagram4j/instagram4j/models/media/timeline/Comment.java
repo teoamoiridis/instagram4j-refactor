@@ -22,8 +22,4 @@ public class Comment extends IGBaseModel {
     private long media_id;
     private int comment_like_count;
 
-    @Data
-    public static class Caption extends Comment {
-
-    }
 }

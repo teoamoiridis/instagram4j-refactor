@@ -22,7 +22,7 @@ public interface ImageMedia {
 
     User getUser();
 
-    Caption getCaption();
+    Comment getComment();
 
     ImageVersions getImage_versions2();
 

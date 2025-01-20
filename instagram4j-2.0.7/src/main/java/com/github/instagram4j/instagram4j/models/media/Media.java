@@ -17,7 +17,7 @@ public class Media extends IGBaseModel {
     private String client_cache_key;
     private int filter_type;
     private User user;
-    private Caption caption;
+    private Comment caption;
     private boolean can_viewer_reshare;
     private boolean photo_of_you;
     private boolean can_viewer_save;

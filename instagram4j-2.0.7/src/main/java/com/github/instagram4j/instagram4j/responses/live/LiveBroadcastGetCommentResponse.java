@@ -12,7 +12,7 @@ public class LiveBroadcastGetCommentResponse extends IGResponse {
     private boolean comment_likes_enabled;
     private List<Comment> comments;
     private int comment_count;
-    private Caption caption;
+    private Comment caption;
     @JsonProperty("is_first_fetch")
     private boolean is_first_fetch;
 }
