@@ -26,13 +26,16 @@ public class StoryAction {
 
     public CompletableFuture<MediaConfigureToStoryResponse> uploadPhoto(byte[] data,
             List<ReelMetadataItem> metadata) {
-        String upload_id = String.valueOf(System.currentTimeMillis());
-        return client.actions().upload()
-                .photo(data, upload_id)
+        return initPhotoUpload(data)
                 .thenCompose(response -> {
                     return new MediaConfigureToStoryRequest(response.getUpload_id(), metadata)
                             .execute(client);
                 });
+    }
+    
+    public CompletableFuture<RuploadPhotoResponse> initPhotoUpload(byte[] data) {
+    	String upload_id = String.valueOf(System.currentTimeMillis());
+    	return client.actions().upload().photo(data, upload_id);
     }
 
     public CompletableFuture<MediaConfigureToStoryResponse> uploadVideo(byte[] video, byte[] cover,
