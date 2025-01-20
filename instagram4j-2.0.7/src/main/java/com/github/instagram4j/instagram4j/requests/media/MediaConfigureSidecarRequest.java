@@ -54,15 +54,8 @@ public class MediaConfigureSidecarRequest extends IGPostRequest<MediaConfigureSi
         private String disable_comments;
 
         public MediaConfigureSidecarPayload location(Location loc) {
-            Location payloadLoc = new Location();
+            Location payloadLoc = loc.copyLocation();
 
-            payloadLoc.setExternal_id(loc.getExternal_id());
-            payloadLoc.setName(loc.getName());
-            payloadLoc.setAddress(loc.getAddress());
-            payloadLoc.setLat(loc.getLat());
-            payloadLoc.setLng(loc.getLng());
-            payloadLoc.setExternal_source(loc.getExternal_source());
-            payloadLoc.put(payloadLoc.getExternal_source() + "_id", payloadLoc.getExternal_id());
             this.location = IGUtils.objectToJson(payloadLoc);
             this.put("geotag_enabled", "1");
             this.put("posting_latitude", payloadLoc.getLat().toString());
